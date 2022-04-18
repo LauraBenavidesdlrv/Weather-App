@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 function App() {
  //Using state Hooks
   const [city, setCity] = useState("Vancouver");
-  const [country, setCountry] = useState("CA");
   const [data, setData] = useState({});
 
   
@@ -13,7 +12,7 @@ function App() {
   useEffect(()=>{
     const searching  = async () => {
       //API conection
-      const url = await fetch (`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=9deb3cccedf15a1276b9a6818a5d3718&units=metric`);
+      const url = await fetch (`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=9deb3cccedf15a1276b9a6818a5d3718&units=metric`);
       if (uploaded){
         setData(await url.json());
         console.log(data)
@@ -23,13 +22,15 @@ function App() {
       }
     }
       searching();
-  }, [city,country]);
+  }, [city]);
 
     const sub = (e) => {
       e.preventDefault();
       setCity("")
-      setCountry("")
+
+      
     }
+ 
   return (
     <div className="app">
       <div className="wrapper">
@@ -42,19 +43,12 @@ function App() {
           value={city}
           onChange={(event) => setCity(event.target.value)}
           />
-          <input 
-          type="text"
-          placeholder="Country code, ex:CA"
-          required
-          name="searchCountry"
-          value={country}
-          onChange={(event) => setCountry(event.target.value)}
-          />
+
           <button type="button" onClick={sub}>Reset</button>
         </form>
         <div className="info">
           <div className="location">
-            <p>{data.name}, {country}</p>
+            <p>{data.name} </p>
           </div>
           <div className="temp1">
           {data.main ? <h1>{data.main.temp.toFixed()}°C <i className="bi bi-cloud-sun-fill"></i></h1> : null}
